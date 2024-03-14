@@ -450,7 +450,7 @@ pub mod filters {
     // which involve type casting from `error` to `ConcreteError`.
     pub fn error_type_cast(type_: &impl AsType) -> Result<String, askama::Error> {
         let result = match type_.as_type() {
-            Type::Enum { .. } => format!(".({})", oracle().find(type_).type_label()),
+            Type::Enum { .. } => format!(".(*{})", oracle().find(type_).type_label()),
             _ => String::from(""),
         };
         Ok(result)
@@ -458,6 +458,14 @@ pub mod filters {
 
     pub fn type_name(type_: &impl AsType) -> Result<String, askama::Error> {
         Ok(oracle().find(type_).type_label())
+    }
+
+    pub fn variant_type_name(type_: &impl AsType) -> Result<String, askama::Error> {
+        let result = match type_.as_type() {
+            Type::Enum { .. } => format!("*{}", oracle().find(type_).type_label()),
+            _ => oracle().find(type_).type_label(),
+        };
+        Ok(result)
     }
 
     pub fn canonical_name(type_: &impl AsType) -> Result<String, askama::Error> {
