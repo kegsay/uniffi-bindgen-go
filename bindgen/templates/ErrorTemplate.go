@@ -110,7 +110,7 @@ func (c {{ e|ffi_converter_name }}) Read(reader io.Reader) error {
 	case {{ loop.index }}:
 		return &{{ type_name|class_name }}{&{{ type_name|class_name }}{{ variant.name()|class_name }}{
 			{%- for field in variant.fields() %}
-			{{ field.name()|error_field_name }}: {{ field|read_fn }}(reader),
+			{{ field.name()|error_field_name }}: {{ field|read_fn }}(reader){{field|error_type_cast}},
 			{%- endfor %}
 		}}
 	{%- endfor %}

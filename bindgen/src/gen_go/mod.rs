@@ -444,6 +444,18 @@ pub mod filters {
         Ok(nm.to_string().to_upper_camel_case())
     }
 
+    // Return the runtime type cast of this field if it is an Enum type. In most cases
+    // we want to pass around the `error` interface and let the caller type cast, but in
+    // some cases (e.g when writing nested errors) we need to work with concrete error types
+    // which involve type casting from `error` to `ConcreteError`.
+    pub fn error_type_cast(type_: &impl AsType) -> Result<String, askama::Error> {
+        let result = match type_.as_type() {
+            Type::Enum { .. } => format!(".({})", oracle().find(type_).type_label()),
+            _ => String::from(""),
+        };
+        Ok(result)
+    }
+
     pub fn type_name(type_: &impl AsType) -> Result<String, askama::Error> {
         Ok(oracle().find(type_).type_label())
     }
