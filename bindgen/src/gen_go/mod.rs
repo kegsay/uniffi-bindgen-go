@@ -453,7 +453,7 @@ pub mod filters {
         is_name_used_as_error: bool,
     ) -> Result<String, askama::Error> {
         let result = match type_.as_type() {
-            Type::Enum { name: n, .. } => {
+            Type::Enum { .. } => {
                 if is_name_used_as_error {
                     format!(".(*{})", oracle().find(type_).type_label())
                 } else {
