@@ -69,7 +69,7 @@ func ({{ foreign_callback }}) {{ method_name }} (callback {{ type_name }}, args 
 	{%- endmatch -%}
 	callback.{{ meth.name()|fn_name }}(
 		{%- for arg in meth.arguments() -%}
-		{{ arg|read_fn }}(reader)
+		{{ arg|read_fn }}(reader){{arg|error_type_cast(ci.is_name_used_as_error(arg|type_name))}}
 		{%- if !loop.last %}, {% endif -%}
 		{%- endfor -%}
 		);

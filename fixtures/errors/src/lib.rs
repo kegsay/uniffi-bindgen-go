@@ -45,6 +45,11 @@ pub enum ComplexError {
     },
 }
 
+pub enum SomeEnum {
+    One,
+    Two,
+}
+
 #[derive(Debug, thiserror::Error)]
 pub enum NestedError {
     #[error(transparent)]
@@ -180,6 +185,11 @@ fn error_string() -> Result<String, BoobyTrapError> {
 
 fn error_timestamp() -> Result<std::time::SystemTime, BoobyTrapError> {
     Err(BoobyTrapError::IceSlip)
+}
+
+pub trait Callback {
+    fn do_something(&self, error: BoobyTrapError);
+    fn do_something_else(&self, a: SomeEnum);
 }
 
 include!(concat!(env!("OUT_DIR"), "/errors.uniffi.rs"));

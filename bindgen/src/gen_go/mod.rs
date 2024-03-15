@@ -448,9 +448,18 @@ pub mod filters {
     // we want to pass around the `error` interface and let the caller type cast, but in
     // some cases (e.g when writing nested errors) we need to work with concrete error types
     // which involve type casting from `error` to `ConcreteError`.
-    pub fn error_type_cast(type_: &impl AsType) -> Result<String, askama::Error> {
+    pub fn error_type_cast(
+        type_: &impl AsType,
+        is_name_used_as_error: bool,
+    ) -> Result<String, askama::Error> {
         let result = match type_.as_type() {
-            Type::Enum { .. } => format!(".(*{})", oracle().find(type_).type_label()),
+            Type::Enum { name: n, .. } => {
+                if is_name_used_as_error {
+                    format!(".(*{})", oracle().find(type_).type_label())
+                } else {
+                    String::from("")
+                }
+            }
             _ => String::from(""),
         };
         Ok(result)

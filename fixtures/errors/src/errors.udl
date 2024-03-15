@@ -46,9 +46,19 @@ interface ComplexError {
     Option(i32? id_a, i32? id_b);
 };
 
+enum SomeEnum {
+  "One",
+  "Two",
+};
+
 dictionary Vec2 {
     double x;
     double y;
+};
+
+callback interface Callback {
+    void do_something(BoobyTrapError error);
+    void do_something_else(SomeEnum e);
 };
 
 namespace errors {
